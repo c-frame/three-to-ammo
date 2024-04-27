@@ -672,8 +672,6 @@ export const iterateGeometries = (function() {
   const vertices = [];
   return function(root, options, cb) {
     inverse.copy(root.matrixWorld).invert();
-    const scale = new THREE.Vector3();
-    scale.setFromMatrixScale(root.matrixWorld);
     root.traverse(mesh => {
       const transform = new THREE.Matrix4();
       if (
