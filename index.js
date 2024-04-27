@@ -669,6 +669,7 @@ const _finishCollisionShape = function(collisionShape, options, scale) {
 
 export const iterateGeometries = (function() {
   const inverse = new THREE.Matrix4();
+  const vertices = [];
   return function(root, options, cb) {
     inverse.copy(root.matrixWorld).invert();
     const scale = new THREE.Vector3();
@@ -688,8 +689,33 @@ export const iterateGeometries = (function() {
         }
         // todo: might want to return null xform if this is the root so that callers can avoid multiplying
         // things by the identity matrix
+
+        let unInterleavedVertices;
+        if (mesh.geometry.isBufferGeometry) {
+          const verticesAttribute = mesh.geometry.attributes.position;
+          if (verticesAttribute.isInterleavedBufferAttribute) {
+            //
+            // An interleaved buffer attribute shares the underlying
+            // array with other attributes. We translate it to a
+            // regular array here to not carry this logic around in
+            // the shape api.
+            //
+            vertices.length = 0;
+            for (let i = 0; i < verticesAttribute.count; i += 3) {
+              vertices.push(verticesAttribute.getX(i));
+              vertices.push(verticesAttribute.getY(i));
+              vertices.push(verticesAttribute.getZ(i));
+            }
+	    unInterleavedVertices = vertices;
+          } else {
+	    unInterleavedVertices = verticesAttribute.array;
+          }
+        } else {
+          unInterleavedVertices = mesh.geometry.vertices;
+        }
+
         cb(
-          mesh.geometry.isBufferGeometry ? mesh.geometry.attributes.position.array : mesh.geometry.vertices,
+          unInterleavedVertices,
           transform.elements,
           mesh.geometry.index ? mesh.geometry.index.array : null
         );
