@@ -1,5 +1,5 @@
 {
-  "name": "three-to-ammo",
+  "name": "@c-frame/three-to-ammo",
   "version": "1.0.2",
   "description": "Convert THREE.Mesh to Ammo.btCollisionShape",
   "homepage": "https://github.com/infinitelee/three-to-ammo",
