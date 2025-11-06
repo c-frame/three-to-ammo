@@ -19,7 +19,8 @@
     "three.js"
   ],
   "scripts": {
-    "test": "webpack-dev-server --mode=development"
+    "test": "webpack-dev-server --mode=development",
+    "test-legacy": "export NODE_OPTIONS=--openssl-legacy-provider && npm run test"
   },
   "peerDependencies": {
     "ammo.js": "*",
