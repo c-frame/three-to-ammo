@@ -667,6 +667,16 @@ const _finishCollisionShape = function(collisionShape, options, scale) {
   collisionShape.localTransform = localTransform;
 };
 
+const isObjectVisible = (object) => {
+  if (!object.visible) return false
+  
+  if (object.parent) {
+    return isObjectVisible(object.parent)
+  }
+  
+  return true
+}
+
 export const iterateGeometries = (function() {
   const inverse = new THREE.Matrix4();
   return function(root, options, cb) {
@@ -676,7 +686,7 @@ export const iterateGeometries = (function() {
       if (
         mesh.isMesh &&
         mesh.name !== "Sky" &&
-        (options.includeInvisible || (mesh.el && mesh.el.object3D.visible) || mesh.visible)
+        (options.includeInvisible || isObjectVisible(mesh))
       ) {
         if (mesh === root) {
           transform.identity();

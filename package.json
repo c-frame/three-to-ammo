@@ -1,6 +1,6 @@
 {
   "name": "@c-frame/three-to-ammo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Convert THREE.Mesh to Ammo.btCollisionShape",
   "homepage": "https://github.com/infinitelee/three-to-ammo",
   "main": "index.js",
@@ -19,7 +19,8 @@
     "three.js"
   ],
   "scripts": {
-    "test": "webpack-dev-server --mode=development"
+    "test": "webpack-dev-server --mode=development",
+    "test-legacy": "export NODE_OPTIONS=--openssl-legacy-provider && npm run test"
   },
   "peerDependencies": {
     "ammo.js": "*",
